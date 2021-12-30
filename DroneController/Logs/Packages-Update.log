@@ -1,5 +1,5 @@
 
-=== Thu Dec 30 12:07:18 2021
+=== Thu Dec 30 22:02:19 2021
 
 Packages were changed.
 Update Mode: mergeDefaultDependencies
@@ -10,16 +10,20 @@ The following packages were added:
   com.unity.modules.ai@1.0.0
   com.unity.modules.cloth@1.0.0
   com.unity.modules.director@1.0.0
-  com.unity.modules.physics2d@1.0.0
+  com.unity.modules.physics@1.0.0
   com.unity.modules.terrain@1.0.0
   com.unity.modules.terrainphysics@1.0.0
-  com.unity.modules.tilemap@1.0.0
+  com.unity.modules.umbra@1.0.0
   com.unity.modules.vehicles@1.0.0
   com.unity.modules.vr@1.0.0
   com.unity.modules.wind@1.0.0
   com.unity.modules.xr@1.0.0
   com.unity.timeline@1.4.8
 The following packages were updated:
+  com.unity.2d.animation from version 3.2.6 to 5.0.9
+  com.unity.2d.pixel-perfect from version 2.0.4 to 4.0.1
+  com.unity.2d.psdimporter from version 2.1.6 to 4.1.2
+  com.unity.2d.spriteshape from version 3.0.14 to 5.1.6
   com.unity.ide.rider from version 1.1.4 to 2.0.7
   com.unity.ide.vscode from version 1.2.3 to 1.2.4
   com.unity.mobile.android-logcat from version 1.2.0 to 1.2.3
