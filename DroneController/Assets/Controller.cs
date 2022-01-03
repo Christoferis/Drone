@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using util;
 
 
 namespace Controller {
@@ -19,8 +18,11 @@ namespace Controller {
         void Update()
         {
             //send packages to Bluetooth connection
+        }
 
-            
+        void Send()
+        {
+
         }
 
         //function called upon connection lost
@@ -29,7 +31,8 @@ namespace Controller {
 
         }
 
-        void Receive()
+        //collectionpoint for all info
+        void AddtoPackage(string type, object data)
         {
 
         }

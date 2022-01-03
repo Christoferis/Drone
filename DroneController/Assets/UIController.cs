@@ -3,91 +3,122 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class UIController : MonoBehaviour
-{
-    //a script that controls the position of the moving ui element
-    // Start is called before the first frame update
-    public bool xConstraint;
-    public bool yConstraint;
-    public bool clip;
-    public GameObject parent;
 
-    //describe max bounds
-    Vector2 max;
-    Vector2 min;
-    Vector2 resting;
+namespace Controller {
 
-    void Start()
+    public class UIController : MonoBehaviour
     {
-        //get start resting position
-        resting = transform.position;
+        //a script that controls the position of the moving ui element
+        // Start is called before the first frame update
+        //xConstraint: locked to x axis, yConstraint locked to y axis
+        public bool xConstraint;
+        public bool yConstraint;
+        public bool clip;
+        public string type;
+        public GameObject parent;
 
-        //since everything is centered and at y = 0
-        max.x = (float) Math.Floor(parent.transform.localScale.x / 2 + parent.transform.position.x);
-        max.y = parent.transform.localScale.y / 2 + parent.transform.position.y;
+        //describe max bounds
+        Vector2 max;
+        Vector2 min;
+        Vector2 resting;
+        Vector3 touchPos;
 
-        min.x = (float)Math.Floor(parent.transform.localScale.x / 2 - parent.transform.position.x);
-        min.y = parent.transform.localScale.y / 2 - parent.transform.position.y;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        //get Touch move along constraints
-        if(Input.touchCount > 0)
+        void Start()
         {
-            Touch input = Input.GetTouch(0);
+            //get start resting position
+            resting = transform.position;
 
+            //since everything is centered and at y = 0
+            max.x = (float)Math.Floor(parent.transform.localScale.x / 2 + parent.transform.position.x);
+            max.y = parent.transform.localScale.y / 2 + parent.transform.position.y;
 
-            switch (input.phase)
+            min.x = (float)Math.Floor(parent.transform.localScale.x / 2 - parent.transform.position.x);
+            min.y = parent.transform.localScale.y / 2 - parent.transform.position.y;
+        }
+
+        // Update is called once per frame
+        void Update()
+        {
+            //get Touch move along constraints
+            if (Input.touchCount > 0)
             {
+                Touch input = Input.GetTouch(0);
 
-                case TouchPhase.Began:
-                    break;
+                //check if in bounds
+                Vector2 i_min = new(input.position.x - input.radius + input.radiusVariance, input.position.y - input.radius + input.radiusVariance);
+                Vector2 i_max = new(input.position.x + input.radius + input.radiusVariance, input.position.y + input.radius + input.radiusVariance);
 
-                case TouchPhase.Moved:
-                    break;
 
-                case TouchPhase.Ended:
+                switch (input.phase)
+                {
+                    case TouchPhase.Began or TouchPhase.Stationary:
+                        touchPos = Camera.main.ScreenToWorldPoint(input.position);
+                        break;
 
-                    if (clip)
-                    {
+                    case TouchPhase.Moved:
+                        this.SendData(touchPos - Camera.main.ScreenToWorldPoint(input.position));
+                        break;
 
-                    }
-                    break;
+                    case TouchPhase.Ended or TouchPhase.Canceled:
+                        if (clip)
+                        {
+                            transform.position = resting;
+                        }
+                        break;
+
+                }
+
+
+
+                //get different cases
+
+
+                ////create input bounds
+                //Vector2 i_min = new(input.position.x - input.radius + input.radiusVariance, input.position.y - input.radius + input.radiusVariance);
+                //Vector2 i_max = new(input.position.x + input.radius + input.radiusVariance, input.position.y + input.radius + input.radiusVariance);
+
+
+
+                ////check range
+                //if {}
+
             }
 
 
 
-            //get different cases
-
-
-            ////create input bounds
-            //Vector2 i_min = new(input.position.x - input.radius + input.radiusVariance, input.position.y - input.radius + input.radiusVariance);
-            //Vector2 i_max = new(input.position.x + input.radius + input.radiusVariance, input.position.y + input.radius + input.radiusVariance);
-
-            ////also flip to fit the collision thingy
-            //Rect i_bounds = new(new Vector2(i_min.x, i_min.y - i_max.y - i_min.y), i_max - i_min);
-
-
-            ////check range
-            //if {}
 
         }
 
-
-
-        if (clip)
+        //send, convert data to Controller.cs
+        void SendData(Vector2 data)
         {
-            transform.position = resting;
+            //change ui element
+            if (xConstraint && !yConstraint)
+            {
+                Vector2 d = new Vector2(data.x, 0);
+                transform.position += new Vector3(data.x, 0, 0);
+            }
+
+            if (yConstraint && !xConstraint)
+            {
+                Vector2 d = new Vector2(0, data.y);
+                transform.position += new Vector3(0, data.y, 0);
+            }
+
+            if (!xConstraint && !yConstraint)
+            {
+                Vector2 d = data;
+                transform.position += new Vector3(data.x, data.y, 0);
+            }
+            else
+            {
+                Vector2 d = Vector2.zero;
+            }
+
+            //TODO: Read about SendMessages
+
         }
-    }
 
-    //send data to Controller.cs
-    void SendData()
-    {
 
     }
-
-    
 }
