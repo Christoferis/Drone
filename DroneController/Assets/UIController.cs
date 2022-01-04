@@ -45,13 +45,11 @@ namespace Controller {
                 Touch input = Input.GetTouch(0);
 
                 //check if in bounds
-                Vector2 i_min = new(input.position.x - input.radius + input.radiusVariance, input.position.y - input.radius + input.radiusVariance);
-                Vector2 i_max = new(input.position.x + input.radius + input.radiusVariance, input.position.y + input.radius + input.radiusVariance);
-
 
                 switch (input.phase)
                 {
-                    case TouchPhase.Began or TouchPhase.Stationary:
+                    case TouchPhase.Stationary:
+                    case TouchPhase.Began:
                         touchPos = Camera.main.ScreenToWorldPoint(input.position);
                         break;
 
@@ -59,7 +57,8 @@ namespace Controller {
                         this.SendData(touchPos - Camera.main.ScreenToWorldPoint(input.position));
                         break;
 
-                    case TouchPhase.Ended or TouchPhase.Canceled:
+                    case TouchPhase.Canceled:
+                    case TouchPhase.Ended:
                         if (clip)
                         {
                             transform.position = resting;
@@ -69,18 +68,6 @@ namespace Controller {
                 }
 
 
-
-                //get different cases
-
-
-                ////create input bounds
-                //Vector2 i_min = new(input.position.x - input.radius + input.radiusVariance, input.position.y - input.radius + input.radiusVariance);
-                //Vector2 i_max = new(input.position.x + input.radius + input.radiusVariance, input.position.y + input.radius + input.radiusVariance);
-
-
-
-                ////check range
-                //if {}
 
             }
 
