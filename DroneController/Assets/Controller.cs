@@ -12,7 +12,8 @@ namespace Controller {
         //Handle all things
         void Start()
         {
-            //call thread from DC Backend Proj
+            //call thread from DC Backend dll
+
         }
 
         // Update is called once per frame

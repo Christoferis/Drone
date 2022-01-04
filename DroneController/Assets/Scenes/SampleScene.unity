@@ -221,7 +221,8 @@ MonoBehaviour:
   xConstraint: 0
   yConstraint: 0
   clip: 0
-  parent: {fileID: 0}
+  type: xy
+  parent: {fileID: 835281635}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -416,6 +417,7 @@ MonoBehaviour:
   xConstraint: 0
   yConstraint: 0
   clip: 0
+  type: amp
   parent: {fileID: 1450834403}
 --- !u!1 &835281635
 GameObject:
