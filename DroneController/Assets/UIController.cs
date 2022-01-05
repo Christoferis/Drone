@@ -26,6 +26,7 @@ namespace Controller {
         void Start()
         {
             //get start resting position
+            print(parent);
             resting = transform.position;
 
             //since everything is centered and at y = 0 its a rectangle btw -> just convert to a rect
@@ -34,6 +35,8 @@ namespace Controller {
 
             min.x = (float)Math.Floor(parent.transform.localScale.x / 2 - parent.transform.position.x);
             min.y = parent.transform.localScale.y / 2 - parent.transform.position.y;
+
+
         }
 
         // Update is called once per frame
@@ -45,29 +48,30 @@ namespace Controller {
                 Touch input = Input.GetTouch(0);
 
                 //check
-                if (this.TouchInBounds(input))
+                if (!this.TouchInBounds(input)) { return; }
+                
+                switch (input.phase)
                 {
-                    switch (input.phase)
-                    {
-                        case TouchPhase.Stationary:
-                        case TouchPhase.Began:
-                            touchPos = Camera.main.ScreenToWorldPoint(input.position);
-                            break;
+                    case TouchPhase.Stationary:
+                    case TouchPhase.Began:
+                        touchPos = Camera.main.ScreenToWorldPoint(new Vector3(input.position.x, input.position.y, 10));
+                        print("started interaction");
+                        break;
 
-                        case TouchPhase.Moved:
-                            //place ui element into new spot, write value
-                            Vector2 offset = touchPos - Camera.main.ScreenToWorldPoint(input.position);
-                            this.UpdateUI(offset);
-                            break;
+                    case TouchPhase.Moved:
+                        //place ui element into new spot, write value
+                        Vector2 offset = touchPos - Camera.main.ScreenToWorldPoint(new Vector3(input.position.x, input.position.y, 10));
+                        this.UpdateUI(offset);
+                        print(offset);
+                        break;
 
-                        case TouchPhase.Canceled:
-                        case TouchPhase.Ended:
-                            if (clip)
-                            {
-                                transform.position = resting;
-                            }
-                            break;
-                    }
+                    case TouchPhase.Canceled:
+                    case TouchPhase.Ended:
+                        if (clip)
+                        {
+                            transform.position = resting;
+                        }
+                        break;
                 }
             }
             //if nothing is touching the screen
@@ -78,13 +82,18 @@ namespace Controller {
                     transform.position = resting;
                 }
             }
+
         }
 
         bool TouchInBounds(Touch touch)
         {
-            Rect touchBounds = new Rect(touch.position - new Vector2(touch.radius + touch.radiusVariance, touch.radius + touch.radiusVariance), new Vector2((float) Math.Pow(touch.radius + touch.radiusVariance, 2), (float) Math.Pow(touch.radius + touch.radiusVariance, 2)));
+            Vector2 tPos = Camera.main.ScreenToWorldPoint(new Vector3(touch.position.x, touch.position.y, 10));
+
+            Rect touchBounds = new Rect(tPos - new Vector2(touch.radius + touch.radiusVariance, touch.radius + touch.radiusVariance), new Vector2((float) Math.Pow(touch.radius + touch.radiusVariance, 2), (float) Math.Pow(touch.radius + touch.radiusVariance, 2)));
 
             Rect UIBounds = new Rect(transform.position - new Vector3(transform.localScale.x / 2, transform.localScale.y / 2, 0), transform.localScale);
+
+            print(touchBounds.Overlaps(UIBounds));
 
             return touchBounds.Overlaps(UIBounds);
         }
@@ -119,6 +128,8 @@ namespace Controller {
             {
                 transform.position = new Vector3(min.x, 0, 0);
             }
+
+            print("updated");
 
         }
 
