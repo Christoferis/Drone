@@ -3,7 +3,7 @@
     "m_SelectedPackage": {
         "deviceId": "QV7109ND24",
         "name": "com.DefaultCompany.com.unity.template.mobile2D",
-        "processId": 26058,
+        "processId": 3404,
         "exited": false
     },
     "m_SelectedPriority": 0,
@@ -11,85 +11,61 @@
         {
             "deviceId": "QV7109ND24",
             "name": "com.DefaultCompany.com.unity.template.mobile2D",
-            "processId": 27090,
-            "exited": false
-        },
-        {
-            "deviceId": "QV7109ND24",
-            "name": "com.DefaultCompany.com.unity.template.mobile2D",
-            "processId": 31787,
-            "exited": false
-        },
-        {
-            "deviceId": "QV7109ND24",
-            "name": "com.DefaultCompany.com.unity.template.mobile2D",
-            "processId": 32469,
-            "exited": false
-        },
-        {
-            "deviceId": "QV7109ND24",
-            "name": "com.DefaultCompany.com.unity.template.mobile2D",
-            "processId": 1589,
-            "exited": false
-        },
-        {
-            "deviceId": "QV7109ND24",
-            "name": "com.DefaultCompany.com.unity.template.mobile2D",
-            "processId": 2406,
-            "exited": false
-        },
-        {
-            "deviceId": "QV7109ND24",
-            "name": "com.DefaultCompany.com.unity.template.mobile2D",
-            "processId": 3896,
-            "exited": false
-        },
-        {
-            "deviceId": "QV7109ND24",
-            "name": "com.DefaultCompany.com.unity.template.mobile2D",
-            "processId": 4694,
-            "exited": false
-        },
-        {
-            "deviceId": "QV7109ND24",
-            "name": "com.DefaultCompany.com.unity.template.mobile2D",
-            "processId": 5265,
-            "exited": false
-        },
-        {
-            "deviceId": "QV7109ND24",
-            "name": "com.DefaultCompany.com.unity.template.mobile2D",
-            "processId": 20056,
-            "exited": false
-        },
-        {
-            "deviceId": "QV7109ND24",
-            "name": "com.DefaultCompany.com.unity.template.mobile2D",
-            "processId": 20806,
-            "exited": false
-        },
-        {
-            "deviceId": "QV7109ND24",
-            "name": "com.DefaultCompany.com.unity.template.mobile2D",
-            "processId": 21259,
-            "exited": false
-        },
-        {
-            "deviceId": "QV7109ND24",
-            "name": "com.DefaultCompany.com.unity.template.mobile2D",
-            "processId": 21521,
-            "exited": false
-        },
-        {
-            "deviceId": "QV7109ND24",
-            "name": "com.DefaultCompany.com.unity.template.mobile2D",
-            "processId": 22276,
-            "exited": false
-        },
-        {
-            "deviceId": "QV7109ND24",
-            "name": "com.DefaultCompany.com.unity.template.mobile2D",
             "processId": 26058,
+            "exited": true
+        },
+        {
+            "deviceId": "QV7109ND24",
+            "name": "com.DefaultCompany.com.unity.template.mobile2D",
+            "processId": 28109,
+            "exited": true
+        },
+        {
+            "deviceId": "QV7109ND24",
+            "name": "com.DefaultCompany.com.unity.template.mobile2D",
+            "processId": 21056,
+            "exited": true
+        },
+        {
+            "deviceId": "QV7109ND24",
+            "name": "com.DefaultCompany.com.unity.template.mobile2D",
+            "processId": 22551,
+            "exited": true
+        },
+        {
+            "deviceId": "QV7109ND24",
+            "name": "com.DefaultCompany.com.unity.template.mobile2D",
+            "processId": 23705,
+            "exited": true
+        },
+        {
+            "deviceId": "QV7109ND24",
+            "name": "com.DefaultCompany.com.unity.template.mobile2D",
+            "processId": 24977,
+            "exited": false
+        },
+        {
+            "deviceId": "QV7109ND24",
+            "name": "com.DefaultCompany.com.unity.template.mobile2D",
+            "processId": 25827,
+            "exited": false
+        },
+        {
+            "deviceId": "QV7109ND24",
+            "name": "com.DefaultCompany.com.unity.template.mobile2D",
+            "processId": 603,
+            "exited": false
+        },
+        {
+            "deviceId": "QV7109ND24",
+            "name": "com.DefaultCompany.com.unity.template.mobile2D",
+            "processId": 1941,
+            "exited": false
+        },
+        {
+            "deviceId": "QV7109ND24",
+            "name": "com.DefaultCompany.com.unity.template.mobile2D",
+            "processId": 3404,
             "exited": false
         }
     ],

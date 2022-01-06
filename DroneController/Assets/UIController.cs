@@ -18,8 +18,8 @@ namespace Controller {
         public GameObject parent;
 
         //describe max bounds
-        Vector2 max;
-        Vector2 min;
+        Rect bounds;
+
         Vector2 resting;
         Vector3 touchPos;
 
@@ -29,14 +29,12 @@ namespace Controller {
             print(parent);
             resting = transform.position;
 
-            //since everything is centered and at y = 0 its a rectangle btw -> just convert to a rect
-            max.x = (float)Math.Floor(parent.transform.localScale.x / 2 + parent.transform.position.x);
-            max.y = parent.transform.localScale.y / 2 + parent.transform.position.y;
+            bounds = new Rect();
 
-            min.x = (float)Math.Floor(parent.transform.localScale.x / 2 - parent.transform.position.x);
-            min.y = parent.transform.localScale.y / 2 - parent.transform.position.y;
-
-
+            bounds.xMax = (float)Math.Floor(parent.transform.localScale.x) / 2 + parent.transform.position.x;
+            bounds.xMin = parent.transform.position.x - (float)Math.Floor(parent.transform.localScale.x / 2);
+            bounds.yMax = parent.transform.localScale.y / 2 + parent.transform.position.y;
+            bounds.yMin = parent.transform.position.y - (float)Math.Floor(parent.transform.localScale.y / 2);
         }
 
         // Update is called once per frame
@@ -52,18 +50,18 @@ namespace Controller {
                 
                 switch (input.phase)
                 {
-                    case TouchPhase.Stationary:
                     case TouchPhase.Began:
                         touchPos = Camera.main.ScreenToWorldPoint(new Vector3(input.position.x, input.position.y, 10));
                         print("started interaction");
-                        break;
-
                     case TouchPhase.Moved:
                         //place ui element into new spot, write value
                         Vector2 offset = touchPos - Camera.main.ScreenToWorldPoint(new Vector3(input.position.x, input.position.y, 10));
                         this.UpdateUI(offset);
                         print(offset);
                         break;
+
+                    case TouchPhase.Stationary:
+                        return;
 
                     case TouchPhase.Canceled:
                     case TouchPhase.Ended:
@@ -87,49 +85,55 @@ namespace Controller {
 
         bool TouchInBounds(Touch touch)
         {
-            Vector2 tPos = Camera.main.ScreenToWorldPoint(new Vector3(touch.position.x, touch.position.y, 10));
+            Vector3 minTouch = touch.position + new Vector2(touch.radius + touch.radiusVariance, touch.radius + touch.radiusVariance); minTouch.z = 10;
+            Vector3 maxTouch = touch.position - new Vector2(touch.radius + touch.radiusVariance, touch.radius + touch.radiusVariance); maxTouch.z = 10;
 
-            Rect touchBounds = new Rect(tPos - new Vector2(touch.radius + touch.radiusVariance, touch.radius + touch.radiusVariance), new Vector2((float) Math.Pow(touch.radius + touch.radiusVariance, 2), (float) Math.Pow(touch.radius + touch.radiusVariance, 2)));
+            Rect touchBounds = new Rect();
+            touchBounds.min = Camera.main.ScreenToWorldPoint(minTouch); touchBounds.max = Camera.main.ScreenToWorldPoint(maxTouch);
+
 
             Rect UIBounds = new Rect(transform.position - new Vector3(transform.localScale.x / 2, transform.localScale.y / 2, 0), transform.localScale);
 
-            print(touchBounds.Overlaps(UIBounds));
-
-            return touchBounds.Overlaps(UIBounds);
+            return UIBounds.Overlaps(touchBounds);
         }
 
         void UpdateUI(Vector2 newPos){
             //make sure it doesn't exceed the bounds
             //if locked in y or if both arent ticked
-            if(!xConstraint && transform.position.y + newPos.y <= max.y && transform.position.y + newPos.y >= min.y)
-            {
-                transform.position += new Vector3(0, newPos.y, 0);
+            //rewrite Update ui
+            Vector2 finalPos = Vector2.zero;
 
-            }
-            else if (!xConstraint && transform.position.y + newPos.y > max.y)
+            //y
+            if(!xConstraint && Math.Max(newPos.y, bounds.yMax) != newPos.y && Math.Min(newPos.y, bounds.yMin) != newPos.y)
             {
-                transform.position = new Vector3(0, max.y, 0);   
+                finalPos = new Vector2(transform.position.x, newPos.y);
             }
-            else if(!xConstraint && transform.position.y + newPos.y < min.y)
+            else if(Math.Max(newPos.y, bounds.yMax) == newPos.y) 
             {
-                transform.position = new Vector3(0, min.y, 0);
+                finalPos = new Vector2(transform.position.x, bounds.yMax);
             }
-
-            //if locked in x or if both arent ticked
-            if(!yConstraint && transform.position.x + newPos.y <= max.x && transform.position.x + newPos.x >= min.x)
+            else if(Math.Min(newPos.y, bounds.yMin) == newPos.y)
             {
-                transform.position += new Vector3(newPos.x, 0, 0);
+                finalPos = new Vector2(transform.position.x, bounds.yMin);
             }
-            else if (!yConstraint && transform.position.x + newPos.x > max.x)
+            
+            
+            //x
+            if(!yConstraint && Math.Max(newPos.x, bounds.xMax) != newPos.x && Math.Min(newPos.x, bounds.xMin) != newPos.x)
             {
-                transform.position = new Vector3(max.x, 0, 0);   
+                finalPos = new Vector2(newPos.x, finalPos.y);
             }
-            else if(!yConstraint && transform.position.x + newPos.x < min.x)
+            else if(Math.Max(newPos.x, bounds.xMax) == newPos.x) 
             {
-                transform.position = new Vector3(min.x, 0, 0);
+                finalPos = new Vector2(bounds.xMax, finalPos.y);
+            }
+            else if(Math.Min(newPos.x, bounds.xMin) == newPos.x)
+            {
+                finalPos = new Vector2(bounds.xMin, finalPos.y);
             }
 
             print("updated");
+            transform.position = finalPos;
 
         }
 

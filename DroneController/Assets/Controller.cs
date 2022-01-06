@@ -3,17 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Threading;
 
-
+//main script to control everything (Start Elements, Thread for coms etc.)
 namespace Controller {
 
     public class Controller : MonoBehaviour
     {
-        // Start is called before the first frame update
         //Handle all things
         void Start()
         {
             //call thread from DC Backend dll
 
+
+            //set lock Screen orientation to landscape
+            Screen.autorotateToLandscapeLeft = true;
+            Screen.orientation = ScreenOrientation.LandscapeLeft;
         }
 
         // Update is called once per frame
