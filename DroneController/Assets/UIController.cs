@@ -51,11 +51,9 @@ namespace Controller {
                 switch (input.phase)
                 {
                     case TouchPhase.Began:
-                        touchPos = Camera.main.ScreenToWorldPoint(new Vector3(input.position.x, input.position.y, 10));
-                        print("started interaction");
                     case TouchPhase.Moved:
                         //place ui element into new spot, write value
-                        Vector2 offset = touchPos - Camera.main.ScreenToWorldPoint(new Vector3(input.position.x, input.position.y, 10));
+                        Vector2 offset = Camera.main.ScreenToWorldPoint(new Vector3(input.position.x, input.position.y, 10));
                         this.UpdateUI(offset);
                         print(offset);
                         break;
