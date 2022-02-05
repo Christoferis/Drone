@@ -7,19 +7,15 @@ int standard = 70;
 class motor_control
 {
 private:
-    /* data */
+    
+    
+
 public:
-    motor_control(/* args */);
-    ~motor_control();
+    motor_control()
+    {
+        
+    }
 };
-
-motor_control::motor_control(/* args */)
-{
-}
-
-motor_control::~motor_control()
-{
-}
 
 
 
@@ -30,12 +26,14 @@ bool motor_setup(){
 }
 
 //sets speed for all motors
-void set_all_motors(){}
+void set_all_motors(){
+
+}
 
 
 //shut off in case of emergency
 void safe_shutdown(){
 
-    //first set all motors to standard speed,
+    //first set all motors to standard speed, slowly decrease
 
 }

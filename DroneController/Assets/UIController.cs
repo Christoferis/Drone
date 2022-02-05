@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using util;
 
 
 namespace Controller {
@@ -19,14 +20,11 @@ namespace Controller {
 
         //describe max bounds
         Rect bounds;
-
         Vector2 resting;
-        Vector3 touchPos;
 
         void Start()
         {
             //get start resting position
-            print(parent);
             resting = transform.position;
 
             bounds = new Rect();
@@ -43,52 +41,50 @@ namespace Controller {
             //get Touch move along constraints
             if (Input.touchCount > 0)
             {
-                Touch input = Input.GetTouch(0);
+                //multi touch
+                Touch[] inputs = Input.touches;
 
-                //check
-                if (!this.TouchInBounds(input)) { return; }
-                
-                switch (input.phase)
+                //check;
+                foreach (Touch input in inputs)
                 {
-                    case TouchPhase.Began:
-                    case TouchPhase.Moved:
-                        //place ui element into new spot, write value
-                        Vector2 offset = Camera.main.ScreenToWorldPoint(new Vector3(input.position.x, input.position.y, 10));
-                        this.UpdateUI(offset);
-                        print(offset);
-                        break;
+                    //check if in bounds if not -> next iteration
+                    if (!this.TouchInBounds(input)) { ClipBack(); continue; }
 
-                    case TouchPhase.Stationary:
-                        return;
+                    switch (input.phase)
+                    {
+                        case TouchPhase.Began:
+                        case TouchPhase.Moved:
+                            //place ui element into new spot, write value
+                            Vector2 offset = Camera.main.ScreenToWorldPoint(VectorUtils.ToVector3(input.position, 10));
+                            this.UpdateUI(offset);
+                            break;
 
-                    case TouchPhase.Canceled:
-                    case TouchPhase.Ended:
-                        if (clip)
-                        {
-                            transform.position = resting;
-                        }
-                        break;
+                        case TouchPhase.Stationary:
+                            break;
+
+                        case TouchPhase.Canceled:
+                        case TouchPhase.Ended:
+                            this.ClipBack();
+                            break;
+                    }
+
+                    break;
                 }
+
             }
             //if nothing is touching the screen
             else if (Input.touchCount == 0)
             {
-                if (clip)
-                {
-                    transform.position = resting;
-                }
+                this.ClipBack();
             }
 
         }
 
         bool TouchInBounds(Touch touch)
         {
-            Vector3 minTouch = touch.position + new Vector2(touch.radius + touch.radiusVariance, touch.radius + touch.radiusVariance); minTouch.z = 10;
-            Vector3 maxTouch = touch.position - new Vector2(touch.radius + touch.radiusVariance, touch.radius + touch.radiusVariance); maxTouch.z = 10;
+            Vector2 touchPos = Camera.main.ScreenToWorldPoint(new Vector3(touch.position.x - touch.radius, touch.position.y - touch.radius, 10));
 
-            Rect touchBounds = new Rect();
-            touchBounds.min = Camera.main.ScreenToWorldPoint(minTouch); touchBounds.max = Camera.main.ScreenToWorldPoint(maxTouch);
-
+            Rect touchBounds = new Rect(touchPos, new Vector2(2, 2));
 
             Rect UIBounds = new Rect(transform.position - new Vector3(transform.localScale.x / 2, transform.localScale.y / 2, 0), transform.localScale);
 
@@ -130,9 +126,16 @@ namespace Controller {
                 finalPos = new Vector2(bounds.xMin, finalPos.y);
             }
 
-            print("updated");
             transform.position = finalPos;
 
+        }
+
+        void ClipBack()
+        {
+            if (clip)
+            {
+                transform.position = resting;
+            }
         }
 
         //send, convert data to Controller.cs
